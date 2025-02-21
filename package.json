@@ -1,0 +1,47 @@
+{
+  "name": "openanime",
+  "productName": "OpenAnime",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Desktop Application for OpenAnime",
+  "main": "dist/main.js",
+  "scripts": {
+    "start": "tsc && tsx node_modules/@electron-forge/cli/src/electron-forge-start",
+    "package": "tsc && tsx node_modules/@electron-forge/cli/src/electron-forge-package",
+    "make": "tsc && tsx node_modules/@electron-forge/cli/src/electron-forge-make",
+    "publish": "tsc && tsx node_modules/@electron-forge/cli/src/electron-forge-publish",
+    "lint": "echo \"No linting configured\"",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^7.7.0",
+    "@electron-forge/maker-deb": "^7.7.0",
+    "@electron-forge/maker-rpm": "^7.7.0",
+    "@electron-forge/maker-squirrel": "^7.7.0",
+    "@electron-forge/maker-zip": "^7.7.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.7.0",
+    "@electron-forge/plugin-fuses": "^7.7.0",
+    "@electron-forge/shared-types": "^7.7.0",
+    "@electron/fuses": "^1.8.0",
+    "@types/node": "^22.13.4",
+    "@xhayper/discord-rpc": "^1.2.0",
+    "electron": "34.0.2",
+    "electron-context-menu": "^4.0.5",
+    "electron-log": "^5.3.0",
+    "electron-settings": "^4.0.4",
+    "js-confuser": "^2.0.0",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.3",
+    "typescript": "^4.9.5"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Kax675",
+    "email": "hi@kax.one"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.1",
+    "hwid": "^0.5.0"
+  }
+}
