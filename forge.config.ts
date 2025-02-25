@@ -1,8 +1,21 @@
 import type { ForgeConfig } from '@electron-forge/shared-types';
 import { FusesPlugin } from '@electron-forge/plugin-fuses';
 import { FuseV1Options, FuseVersion } from '@electron/fuses';
-import JSConfuser from "js-confuser";
-import fs from "fs";
+ import rapidenv from 'rapidenv';
+ const env = rapidenv();
+ 
+ env.load()
+
+const ignore = [
+    '/app',
+    "/forge.config.ts",
+    "/README.md",
+    "/tsconfig.json",
+    "/.gitignore",
+    "/.npmrc",
+    '/.env',
+    '/.env.example',
+]
 
 const config: ForgeConfig = {
     plugins: [
@@ -14,14 +27,18 @@ const config: ForgeConfig = {
     ],
     packagerConfig: {
         asar: true,
-        osxSign: {}
+        icon: 'assets/icon.ico',
+        osxSign: {},
+        extraResource: "unpacked",
+        ignore
     },
     makers: [
         {
             name: '@electron-forge/maker-squirrel',
             platforms: ['win32'],
             config: {
-                authors: "Kax"
+                authors: "Kax",
+                loadingGif: './assets/cat.gif',
             }
         },
         {
@@ -35,24 +52,18 @@ const config: ForgeConfig = {
             config: {}
         },
     ],
-    hooks: {
-        preStart: obfuscate,
-        prePackage: obfuscate
-    }
-};
-async function obfuscate() {
-   /* fs.readdirSync("dist").forEach((file) => {
-        if (file.endsWith(".js")) {
-            const code = fs.readFileSync(`dist/${file}`, "utf8");
-            JSConfuser.obfuscate(code, { target: "browser", preset: "low" })
-                .then((result) => {
-                    fs.writeFileSync(`ob/${file}`, result.code);
-                    console.log(`Obfuscated ${file}`);
-                })
-                .catch((err) => {
-                    throw err;
-                });
+    publishers: [
+        {
+            name: '@electron-forge/publisher-github',
+            config: {
+                repository: {
+                    owner: 'OpenAnime',
+                    name: 'desktop-ts'
+                },
+                prerelease: true
+            }
         }
-    }); */
-}
+    ]
+};
+
 export default config;

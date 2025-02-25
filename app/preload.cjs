@@ -2,7 +2,8 @@ const { contextBridge, ipcRenderer } = require('electron');
 
 const args = process.argv;
 const colors = args.find((arg) => arg.startsWith("--colors"))?.slice(9) || '';
-const release = JSON.parse(args.find((arg) => arg.startsWith("--release"))?.slice(10) || '{}');
+console.log(args)
+const app = JSON.parse(args.find((arg) => arg.startsWith("--app-info"))?.slice(11) || '{}');
 const os = JSON.parse(args.find((arg) => arg.startsWith("--os"))?.slice(5) || '{}');
 
 const theme = colors ? JSON.parse(colors) : null;
@@ -16,11 +17,7 @@ contextBridge.exposeInMainWorld("NativeApp", {
             version: [
                 {
                     name: "Client",
-                    v: release.version,
-                },
-                {
-                    name: "Channel",
-                    v: release.channel,
+                    v: app.version,
                 },
                 {
                     name: "Electron",

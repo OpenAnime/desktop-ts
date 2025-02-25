@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, shell, nativeTheme } from 'electron';
+import { app, BrowserWindow, ipcMain, shell, nativeTheme, autoUpdater } from 'electron';
 import settings from 'electron-settings';
 import log from 'electron-log'
 import os from 'os';
@@ -13,6 +13,9 @@ import started from "electron-squirrel-startup";
 import { Theme } from './types.js';
 if (started) app.quit();
 
+const updateURL = `${config.Servers.ReleaseServer}/update/${process.platform}/${app.getVersion()}`
+autoUpdater.setFeedURL({ url: updateURL });
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -20,47 +23,54 @@ log.initialize();
 log.info("App started");
 
 contextMenu({
-	prepend: (defaultActions, parameters, browserWindow) => [
-		{
-			label: 'Rainbow',
-			// Only show it when right-clicking images
-			visible: parameters.mediaType === 'image'
-		},
-		{
-			label: 'Search Google for “{selection}”',
-			// Only show it when right-clicking text
-			visible: parameters.selectionText.trim().length > 0,
-			click: () => {
-				shell.openExternal(`https://google.com/search?q=${encodeURIComponent(parameters.selectionText)}`);
-			}
-		}
-	]
-}); 
+    prepend: (defaultActions, parameters, browserWindow) => [
+        {
+            label: 'Rainbow',
+            // Only show it when right-clicking images
+            visible: parameters.mediaType === 'image'
+        },
+        {
+            label: 'Search Google for “{selection}”',
+            // Only show it when right-clicking text
+            visible: parameters.selectionText.trim().length > 0,
+            click: () => {
+                shell.openExternal(`https://google.com/search?q=${encodeURIComponent(parameters.selectionText)}`);
+            }
+        }
+    ]
+});
 
 let mainWindow: BrowserWindow | null;
 
+
+
 const createWindow = async () => {
+   const appObject = {
+        version: app.getVersion(),
+    }
+
     mainWindow = new BrowserWindow({
         width: 1000,
         height: 600,
         titleBarStyle: 'hidden',
         titleBarOverlay: {
-          color: '#00000000',
-          symbolColor: '#ffffff',
-          height: 20
+            color: '#00000000',
+            symbolColor: '#ffffff',
+            height: 20
         },
         webPreferences: {
             preload: join(__dirname, 'preload.cjs'),
-            contextIsolation: true,
+            //contextIsolation: true,
             additionalArguments: [
-				`--os=${JSON.stringify({
-					hwid: await hashHWID(),
-					key: await settings.get('key'),
-					platform: os.platform(),
-					release: os.release(),
-					type: os.type(),
-				})}`,
-			],
+                `--os=${JSON.stringify({
+                    hwid: await hashHWID(),
+                    key: await settings.get('key'),
+                    platform: os.platform(),
+                    release: os.release(),
+                    type: os.type(),
+                })}`,
+               `--app-info=${JSON.stringify(appObject)}`,
+            ],
         },
     });
 
@@ -69,6 +79,8 @@ const createWindow = async () => {
     mainWindow.on('closed', () => {
         mainWindow = null;
     });
+
+    autoUpdater.checkForUpdates()
 };
 
 app.on('ready', createWindow);
@@ -104,4 +116,16 @@ ipcMain.on("rpc.update", async (event, activity) => {
 ipcMain.on("theme.set", async (event, theme: Theme) => {
     nativeTheme.themeSource = theme;
     log.info("Theme set to:", theme);
+});
+autoUpdater.on('checking-for-update', () => {
+    log.info("Checking for updates");
+});
+autoUpdater.on('update-available', () => {
+    log.info("Update available");
+});
+autoUpdater.on('update-not-available', () => {
+    log.info("Update not available");
+});
+autoUpdater.on('error', (error) => {
+    log.error("Error while checking for updates:", error);
 });
