@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, shell, nativeTheme, autoUpdater } from 'electron';
+import { app, BrowserWindow, ipcMain, shell, nativeTheme, autoUpdater, dialog } from 'electron';
 import settings from 'electron-settings';
 import log from 'electron-log'
 import os from 'os';
@@ -24,11 +24,6 @@ log.info("App started");
 
 contextMenu({
     prepend: (defaultActions, parameters, browserWindow) => [
-        {
-            label: 'Rainbow',
-            // Only show it when right-clicking images
-            visible: parameters.mediaType === 'image'
-        },
         {
             label: 'Search Google for “{selection}”',
             // Only show it when right-clicking text
@@ -129,6 +124,20 @@ autoUpdater.on('checking-for-update', () => {
 });
 autoUpdater.on('update-available', () => {
     log.info("Update available");
+});
+autoUpdater.on('update-downloaded', () => {
+    log.info("Update downloaded");
+    dialog.showMessageBox({
+        type: "info",
+        title: "Yeni bir güncelleme mevcut",
+        message: "Yeni bir güncelleme mevcut. Uygulamayı şimdi güncellemek istiyor musunuz?",
+        buttons: ["Evet", "Daha sonra"],
+        
+    }).then((result) => {
+        if (result.response === 0) {
+            autoUpdater.quitAndInstall();
+        }
+    });
 });
 autoUpdater.on('update-not-available', () => {
     log.info("Update not available");

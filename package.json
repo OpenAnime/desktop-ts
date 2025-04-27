@@ -1,7 +1,7 @@
 {
   "name": "openanime",
   "productName": "OpenAnime",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.3",
   "type": "module",
   "description": "Desktop Application for OpenAnime",
   "main": "src/main.js",
