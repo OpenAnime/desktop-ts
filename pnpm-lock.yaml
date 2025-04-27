@@ -22,7 +22,7 @@ importers:
         version: 5.3.0
       electron-settings:
         specifier: ^4.0.4
-        version: 4.0.4(electron@34.0.2)
+        version: 4.0.4(electron@36.0.0-beta.9)
       electron-squirrel-startup:
         specifier: ^1.0.1
         version: 1.0.1
@@ -60,12 +60,15 @@ importers:
       '@electron/fuses':
         specifier: ^1.8.0
         version: 1.8.0
+      '@types/discord-rpc':
+        specifier: ^4.0.9
+        version: 4.0.9
       '@types/node':
         specifier: ^22.13.4
         version: 22.13.4
       electron:
-        specifier: 34.0.2
-        version: 34.0.2
+        specifier: 36.0.0-beta.9
+        version: 36.0.0-beta.9
       rapidenv:
         specifier: ^1.1.6
         version: 1.1.6
@@ -493,6 +496,12 @@ packages:
   '@types/cacheable-request@6.0.3':
     resolution: {integrity: sha512-IQ3EbTzGxIigb1I3qPZc1rWJnH0BmSKv5QYTalEwweFvyBDLSAe24zP0le/hyi7ecGfZVlIVAg4BZqb8WBwKqw==}
 
+  '@types/discord-rpc@4.0.9':
+    resolution: {integrity: sha512-IW5yPfEzcZRaHTvB/AZOvadMwQihVzxbl6xueuGUr3RBF8VSkzbucCRC/zzS10CEVka7LRGT4C7lXKMbWv8oWQ==}
+
+  '@types/events@3.0.3':
+    resolution: {integrity: sha512-trOc4AAUThEz9hapPtSd7wf5tiQKvTtu5b371UxXdTuqzIh0ArcRspRP0i0Viu+LXstIQ1z96t1nsPxT9ol01g==}
+
   '@types/fs-extra@9.0.13':
     resolution: {integrity: sha512-nEnwB++1u5lVDM2UI4c1+5R+FYaKfaAzS4OococimjVm3nQw3TuzH5UNsocrcTBbhnerblyHj4A49qXbIiZdpA==}
 
@@ -501,9 +510,6 @@ packages:
 
   '@types/keyv@3.1.4':
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
-
-  '@types/node@20.17.19':
-    resolution: {integrity: sha512-LEwC7o1ifqg/6r2gn9Dns0f1rhK+fPFDoMiceTJ6kWmVk6bgXBI/9IOWfVan4WiAavK9pIVWdX0/e3J+eEUh5A==}
 
   '@types/node@22.13.4':
     resolution: {integrity: sha512-ywP2X0DYtX3y08eFVx5fNIw7/uIv8hYUKgXoK8oayJlLnKcRfEYCxWMVE1XagUdVtCJlZT1AU4LXEABW+L1Peg==}
@@ -832,8 +838,8 @@ packages:
     resolution: {integrity: sha512-bO3y10YikuUwUuDUQRM4KfwNkKhnpVO7IPdbsrejwN9/AABJzzTQ4GeHwyzNSrVO+tEH3/Np255a3sVZpZDjvg==}
     engines: {node: '>=8.0.0'}
 
-  electron@34.0.2:
-    resolution: {integrity: sha512-u3F+DSUlg9NaGS+9qnYmSRN8VjAnc3LJDDk1ye1uISJnh4gjG76y3681qLowsPMx4obvCP2eBINnmbLo0yT5WA==}
+  electron@36.0.0-beta.9:
+    resolution: {integrity: sha512-EUkDCSP9a1fxGeV/rMRJjiZ++nOWKYR7LYKDKQsGf5Dk3TttHxNVI/YriEpK0DQgW+TR4aPcndlKx/k+kwWbag==}
     engines: {node: '>= 12.20.55'}
     hasBin: true
 
@@ -1860,9 +1866,6 @@ packages:
     engines: {node: '>=4.2.0'}
     hasBin: true
 
-  undici-types@6.19.8:
-    resolution: {integrity: sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==}
-
   undici-types@6.20.0:
     resolution: {integrity: sha512-Ny6QZ2Nju20vw1SRHe3d9jVu6gJ+4e3+MMpqu7pqE5HT6WsTSlce++GQmK5UXS8mzV8DSYHrQH+Xrf2jVcuKNg==}
 
@@ -2607,6 +2610,12 @@ snapshots:
       '@types/node': 22.13.4
       '@types/responselike': 1.0.3
 
+  '@types/discord-rpc@4.0.9':
+    dependencies:
+      '@types/events': 3.0.3
+
+  '@types/events@3.0.3': {}
+
   '@types/fs-extra@9.0.13':
     dependencies:
       '@types/node': 22.13.4
@@ -2617,10 +2626,6 @@ snapshots:
   '@types/keyv@3.1.4':
     dependencies:
       '@types/node': 22.13.4
-
-  '@types/node@20.17.19':
-    dependencies:
-      undici-types: 6.19.8
 
   '@types/node@22.13.4':
     dependencies:
@@ -2970,9 +2975,9 @@ snapshots:
 
   electron-log@5.3.0: {}
 
-  electron-settings@4.0.4(electron@34.0.2):
+  electron-settings@4.0.4(electron@36.0.0-beta.9):
     dependencies:
-      electron: 34.0.2
+      electron: 36.0.0-beta.9
       lodash: 4.17.21
       mkdirp: 1.0.4
       write-file-atomic: 3.0.3
@@ -2996,10 +3001,10 @@ snapshots:
       - supports-color
     optional: true
 
-  electron@34.0.2:
+  electron@36.0.0-beta.9:
     dependencies:
       '@electron/get': 2.0.3
-      '@types/node': 20.17.19
+      '@types/node': 22.13.4
       extract-zip: 2.0.1
     transitivePeerDependencies:
       - supports-color
@@ -4061,8 +4066,6 @@ snapshots:
       is-typedarray: 1.0.0
 
   typescript@4.9.5: {}
-
-  undici-types@6.19.8: {}
 
   undici-types@6.20.0: {}
 

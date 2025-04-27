@@ -6,7 +6,7 @@ import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import config from './config.js';
 import { hashHWID } from './license.js';
-import { setActivity } from './RPC.js';
+import { setActivity, startRPC, stopRPC } from './RPC.js';
 import contextMenu from 'electron-context-menu';
 // @ts-expect-error -> In vite there are no types for the following line. Electron forge error
 import started from "electron-squirrel-startup";
@@ -58,6 +58,7 @@ const createWindow = async () => {
             symbolColor: '#ffffff',
             height: 20
         },
+        //backgroundMaterial: 'mica',
         webPreferences: {
             preload: join(__dirname, 'preload.cjs'),
             //contextIsolation: true,
@@ -75,7 +76,7 @@ const createWindow = async () => {
     });
 
     mainWindow.loadURL(config.Servers.App);
-    mainWindow.maximize()
+    //mainWindow.maximize()
     mainWindow.on('closed', () => {
         mainWindow = null;
     });
@@ -111,6 +112,12 @@ ipcMain.on("key.clear", async (event) => {
 
 ipcMain.on("rpc.update", async (event, activity) => {
     setActivity(activity);
+});
+ipcMain.on("rpc.start", async (event) => {
+    startRPC();
+});
+ipcMain.on("rpc.stop", async (event) => {
+    stopRPC();
 });
 
 ipcMain.on("theme.set", async (event, theme: Theme) => {
