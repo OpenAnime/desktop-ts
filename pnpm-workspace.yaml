@@ -1,6 +1,0 @@
-ignoredBuiltDependencies:
-  - esbuild
-  - register-scheme
-onlyBuiltDependencies:
-  - electron
-  - electron-winstaller
