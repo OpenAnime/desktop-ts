@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>böhöhöhyt</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: black;
+            margin: 0;
+            height: 100vh;
+        }
+        video {
+          width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <video src="bohohoyt.mp4" autoplay onpause="play()" onended="end()"></video>
+</body>
+
+<script>
+    function play() {
+        document.querySelector("video").play()
+    }
+    function end() {
+        window.close()
+    }
+</script>
+</html>

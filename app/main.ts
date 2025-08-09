@@ -10,7 +10,7 @@ import {
 import settings from "electron-settings";
 import log from "electron-log";
 import os from "os";
-import { dirname, join } from "path";
+import path, { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import config from "./config.js";
 import { setActivity, startRPC, stopRPC } from "./RPC.js";
@@ -34,6 +34,7 @@ log.initialize();
 log.info("App started");
 
 let colors: Record<string, number[]> | null;
+let yok: BrowserWindow | null;
 
 contextMenu({
   prepend: (defaultActions, parameters, browserWindow) => [
@@ -44,9 +45,26 @@ contextMenu({
       click: () => {
         shell.openExternal(
           `https://google.com/search?q=${encodeURIComponent(
-            parameters.selectionText
-          )}`
+            parameters.selectionText,
+          )}`,
         );
+      },
+    },
+    {
+      label: "???",
+      visible: parameters.selectionText.includes("uras"),
+      click: () => {
+        yok = new BrowserWindow({
+          frame: false,
+          fullscreen: true,
+        });
+
+        yok.loadFile(join(__dirname, "../assets/popup.html"));
+        yok.setIgnoreMouseEvents(true)
+        yok.setAlwaysOnTop(true, "screen-saver")
+        yok.on("close", (e) => {
+            e.preventDefault()
+        })
       },
     },
   ],
@@ -77,7 +95,6 @@ const createWindow = async () => {
   const appObject = {
     version: app.getVersion(),
   };
-
   await getColors();
 
   mainWindow = new BrowserWindow({
@@ -148,6 +165,7 @@ app.on("window-all-closed", () => {
     app.quit();
   }
 });
+app.on("quit", () => {});
 
 app.on("activate", () => {
   if (mainWindow === null) {
