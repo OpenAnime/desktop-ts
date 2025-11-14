@@ -60,6 +60,7 @@
       "electron-winstaller",
       "esbuild",
       "register-scheme",
+      "speaker",
       "windows-accent-colors"
     ]
   },
