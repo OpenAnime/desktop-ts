@@ -6,12 +6,12 @@
   "description": "Desktop Application for OpenAnime",
   "main": "src/main.js",
   "scripts": {
-    "start": "tsc && tsx node_modules/@electron-forge/cli/src/electron-forge-start",
-    "package": "tsc && tsx node_modules/@electron-forge/cli/src/electron-forge-package",
-    "make": "tsc && tsx node_modules/@electron-forge/cli/src/electron-forge-make",
-    "publish": "tsc && tsx node_modules/@electron-forge/cli/src/electron-forge-publish",
+    "start": "pnpm build && tsx node_modules/@electron-forge/cli/src/electron-forge-start",
+    "package": "pnpm build && tsx node_modules/@electron-forge/cli/src/electron-forge-package",
+    "make": "pnpm build && tsx node_modules/@electron-forge/cli/src/electron-forge-make",
+    "publish": "pnpm build && tsx node_modules/@electron-forge/cli/src/electron-forge-publish",
     "lint": "echo \"No linting configured\"",
-    "build": "tsc",
+    "build": "tsc && node scripts/obfuscate.mjs",
     "format": "prettier . --write"
   },
   "devDependencies": {
@@ -28,6 +28,7 @@
     "@types/discord-rpc": "^4.0.9",
     "@types/node": "^24.0.15",
     "electron": "38.0.0-alpha.8",
+    "javascript-obfuscator": "^5.5.0",
     "prettier": "^3.6.2",
     "rapidenv": "^1.1.6",
     "ts-node": "^10.9.2",
@@ -50,7 +51,6 @@
     "electron-squirrel-startup": "^1.0.1",
     "hex-to-hsl": "^1.0.2",
     "hwid": "^0.5.0"
-    
   },
   "optionalDependencies": {
     "windows-accent-colors": "^1.0.1"

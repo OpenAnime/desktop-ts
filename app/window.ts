@@ -1,4 +1,11 @@
-import { app, autoUpdater, BrowserWindow, dialog, nativeTheme } from "electron";
+import {
+  app,
+  autoUpdater,
+  BrowserWindow,
+  dialog,
+  nativeTheme,
+  shell,
+} from "electron";
 import os from "os";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
@@ -57,6 +64,11 @@ export function createWindow() {
   //mainWindow.maximize();
   mainWindow.on("closed", () => {
     mainWindow = null;
+  });
+
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    shell.openExternal(url);
+    return { action: "deny" };
   });
 
   autoUpdater.checkForUpdates();
