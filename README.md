@@ -6,8 +6,6 @@
 - **Yarn**: `1.x` (Classic) or modern Yarn
 - **Git**
 
----
-
 ## Linux Build Setup
 
 > **Note for WSL users:** Always clone and run the project inside the native Linux filesystem (e.g., `~/projects/openanime-desktop-ts`), not on mounted Windows paths (`/mnt/...`).
@@ -48,8 +46,6 @@ sudo dnf install -y \
 
 ```
 
----
-
 ### 2. Install `appimagetool` (For AppImage Generation)
 
 ```bash
@@ -57,8 +53,6 @@ sudo wget -O /usr/local/bin/appimagetool "[https://github.com/AppImage/AppImageK
 sudo chmod +x /usr/local/bin/appimagetool
 
 ```
-
----
 
 ### 3. Development & Packaging Commands (Linux)
 
@@ -79,8 +73,6 @@ yarn make --platform=linux --arch=x64
 - `out/make/deb/x64/*.deb`
 - `out/make/rpm/x64/*.rpm`
 - `out/make/OpenAnime-x86_64.AppImage`
-
----
 
 ## Windows Build Setup
 
@@ -103,8 +95,6 @@ corepack prepare yarn@stable --activate
 
 ```
 
----
-
 ### 2. Development & Packaging Commands (Windows)
 
 ```powershell
@@ -125,8 +115,6 @@ yarn make --platform=win32 --arch=x64
 - `OpenAnime-*-full.nupkg`
 - `RELEASES`
 
----
-
 ## WebGPU Requirements on Linux
 
 To leverage WebGPU acceleration on Linux, ensure Vulkan drivers are present:
@@ -143,8 +131,6 @@ Launch with hardware acceleration / Vulkan enabled if testing without a native d
 yarn start --enable-features=Vulkan,WebGPU --use-vulkan
 
 ```
-
----
 
 ## Clean Rebuild
 
