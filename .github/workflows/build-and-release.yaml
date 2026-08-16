@@ -3,15 +3,15 @@ name: Build and Release Desktop App
 on:
   push:
     tags:
-      - "v*.*.*" # Trigger on version tags (e.g., v1.0.0)
-  workflow_dispatch: # Allows manual trigger from GitHub Actions tab
+      - "v*.*.*"
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
   build:
-    name: Build (${{ matrix.os }})
+    name: Build (${{ matrix.os }} - ${{ matrix.arch }})
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -22,6 +22,12 @@ jobs:
             arch: x64
           - os: windows-latest
             platform: win32
+            arch: x64
+          - os: macos-latest
+            platform: darwin
+            arch: arm64
+          - os: macos-13
+            platform: darwin
             arch: x64
 
     steps:
@@ -40,21 +46,10 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
-            rpm \
-            fakeroot \
-            dpkg \
-            file \
-            libfuse2 \
-            libglib2.0-0 \
-            libnss3 \
-            libatk1.0-0 \
-            libatk-bridge2.0-0 \
-            libcups2 \
-            libgtk-3-0 \
-            libasound2 \
-            wget
+            rpm fakeroot dpkg file libfuse2 \
+            libglib2.0-0 libnss3 libatk1.0-0 libatk-bridge2.0-0 \
+            libcups2 libgtk-3-0 libasound2 wget
 
-          # Download and install appimagetool
           sudo wget -O /usr/local/bin/appimagetool "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage"
           sudo chmod +x /usr/local/bin/appimagetool
 
@@ -76,8 +71,9 @@ jobs:
             out/make/**/*.rpm
             out/make/**/*.AppImage
             out/make/**/*.exe
-            out/make/**/*.zip
             out/make/**/*.nupkg
+            out/make/**/*.dmg
+            out/make/**/*.zip
           if-no-files-found: error
 
   release:
@@ -94,7 +90,7 @@ jobs:
       - name: Flatten Artifact Directory
         run: |
           mkdir -p release-files
-          find dist-artifacts -type f \( -name "*.deb" -o -name "*.rpm" -o -name "*.AppImage" -o -name "*.exe" -o -name "*.zip" \) -exec cp {} release-files/ \;
+          find dist-artifacts -type f \( -name "*.deb" -o -name "*.rpm" -o -name "*.AppImage" -o -name "*.exe" -o -name "*.dmg" \) -exec cp {} release-files/ \;
           ls -la release-files/
 
       - name: Create GitHub Release
