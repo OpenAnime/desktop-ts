@@ -10,6 +10,7 @@ import os from "os";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import config from "./config.js";
+import { consumeRendererThemeChange } from "./ipc.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 let mainWindow: BrowserWindow | null = null;
@@ -44,8 +45,24 @@ export function createWindow() {
   mainWindow.loadURL(config.Servers.App);
 
   let themeDialog: Promise<void | Electron.MessageBoxReturnValue> | undefined;
+  let themeSource = nativeTheme.themeSource;
+  let shouldUseDarkColors = nativeTheme.shouldUseDarkColors;
 
   nativeTheme.on("updated", () => {
+    const nextThemeSource = nativeTheme.themeSource;
+    const nextShouldUseDarkColors = nativeTheme.shouldUseDarkColors;
+    const rendererChangedTheme = consumeRendererThemeChange();
+    const systemThemeChanged =
+      !rendererChangedTheme &&
+      nextThemeSource === "system" &&
+      themeSource === "system" &&
+      nextShouldUseDarkColors !== shouldUseDarkColors;
+
+    themeSource = nextThemeSource;
+    shouldUseDarkColors = nextShouldUseDarkColors;
+
+    if (!systemThemeChanged || themeDialog) return;
+
     if (!themeDialog) {
       themeDialog = dialog
         .showMessageBox({
@@ -56,13 +73,11 @@ export function createWindow() {
           buttons: ["Daha Sonra", "Şimdi Yeniden Başlat"],
         })
         .then((response) => {
+          themeDialog = undefined;
           if (response.response === 1) {
             app.relaunch();
             app.quit();
-          } else {
-            return;
           }
-          themeDialog = undefined;
         });
     }
   });

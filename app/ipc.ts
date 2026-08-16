@@ -4,6 +4,14 @@ import os from "os";
 import { getColors } from "./colors.js";
 import { Theme } from "./types.js";
 
+let rendererThemeChange = false;
+
+export function consumeRendererThemeChange() {
+  const changed = rendererThemeChange;
+  rendererThemeChange = false;
+  return changed;
+}
+
 export function registerIpcHandlers() {
   ipcMain.on("app.get-initial-info", async (event) => {
     const colors = await getColors();
@@ -23,6 +31,9 @@ export function registerIpcHandlers() {
   });
 
   ipcMain.on("theme.set", async (_event, theme: Theme) => {
+    if (nativeTheme.themeSource === theme) return;
+
+    rendererThemeChange = true;
     nativeTheme.themeSource = theme;
     log.info("Theme set to:", theme);
   });
