@@ -6,17 +6,17 @@
   "description": "Desktop Application for OpenAnime",
   "main": "src/main.js",
   "scripts": {
-    "start": "pnpm build && tsx node_modules/@electron-forge/cli/src/electron-forge-start",
-    "package": "pnpm build && tsx node_modules/@electron-forge/cli/src/electron-forge-package",
-    "make": "pnpm build && tsx node_modules/@electron-forge/cli/src/electron-forge-make",
-    "publish": "pnpm build && tsx node_modules/@electron-forge/cli/src/electron-forge-publish --verbose",
+    "start": "yarn run build && tsx node_modules/@electron-forge/cli/src/electron-forge-start",
+    "package": "yarn run build && tsx node_modules/@electron-forge/cli/src/electron-forge-package",
+    "make": "yarn run build && tsx node_modules/@electron-forge/cli/src/electron-forge-make",
+    "publish": "yarn run build && tsx node_modules/@electron-forge/cli/src/electron-forge-publish --verbose",
     "lint": "echo \"No linting configured\"",
     "build": "tsc && node scripts/obfuscate.mjs",
     "format": "prettier . --write"
   },
   "devDependencies": {
     "@electron-forge/cli": "^7.8.1",
-    "@electron-forge/maker-deb": "^7.8.1",
+    "@electron-forge/maker-deb": "^7.11.2",
     "@electron-forge/maker-rpm": "^7.8.1",
     "@electron-forge/maker-squirrel": "^7.8.1",
     "@electron-forge/maker-zip": "^7.8.1",
@@ -49,18 +49,12 @@
     "hex-to-hsl": "^1.0.2",
     "hwid": "^0.5.0"
   },
-  "optionalDependencies": {
-    "windows-accent-colors": "^1.0.1"
-  },
   "pnpm": {
     "onlyBuiltDependencies": [
       "electron",
       "electron-winstaller",
       "esbuild",
-      "register-scheme",
-      "speaker",
-      "windows-accent-colors"
+      "register-scheme"
     ]
-  },
-  "packageManager": "pnpm@10.10.0+sha512.d615db246fe70f25dcfea6d8d73dee782ce23e2245e3c4f6f888249fb568149318637dca73c2c5c8ef2a4ca0d5657fb9567188bfab47f566d1ee6ce987815c39"
+  }
 }

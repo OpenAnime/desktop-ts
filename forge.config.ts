@@ -27,6 +27,8 @@ const config: ForgeConfig = {
     }),
   ],
   packagerConfig: {
+    name: "OpenAnime", // Display name
+    executableName: "openanime", // Executable name
     asar: true,
     icon: "assets/icon.ico",
     osxSign: {},
