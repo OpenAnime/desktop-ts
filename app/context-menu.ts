@@ -9,7 +9,7 @@ let popupWindow: BrowserWindow | null = null;
 export function registerContextMenu() {
   contextMenu({
     prepend: (_defaultActions, parameters) => [
-      {
+      /* {
         label: "Search Google for “{selection}”",
         // Only show it when right-clicking text
         visible: parameters.selectionText.trim().length > 0,
@@ -20,7 +20,7 @@ export function registerContextMenu() {
             )}`,
           );
         },
-      },
+      },*/
       {
         label: "???",
         visible: parameters.selectionText.includes("uras"),

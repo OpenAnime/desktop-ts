@@ -7,6 +7,10 @@ import { registerIpcHandlers } from "./ipc.js";
 import { configureUpdater, registerUpdaterEvents } from "./updater.js";
 import { createWindow, hasMainWindow } from "./window.js";
 
+app.commandLine.appendSwitch("force_high_performance_gpu", "1");
+app.commandLine.appendSwitch("enable-features", "Vulkan,D3D12,Metal,WebGPU");
+app.commandLine.appendSwitch("use-vulkan");
+app.commandLine.appendSwitch("enable-unsafe-webgpu", "1");
 if (started) app.quit();
 
 log.initialize();
@@ -16,8 +20,6 @@ configureUpdater();
 registerContextMenu();
 registerIpcHandlers();
 registerUpdaterEvents();
-
-app.commandLine.appendSwitch("force_high_performance_gpu", "1");
 
 app.on("ready", createWindow);
 
