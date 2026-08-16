@@ -1,9 +1,8 @@
 import type { ForgeConfig } from "@electron-forge/shared-types";
-import { FusesPlugin } from "@electron-forge/plugin-fuses";
-import { FuseV1Options, FuseVersion } from "@electron/fuses";
 import rapidenv from "rapidenv";
 import { createAppImage } from "./scripts/appimage";
 import path from "node:path";
+import { execSync } from "node:child_process";
 const env = rapidenv();
 
 env.load();
@@ -21,23 +20,28 @@ const ignore = [
 ];
 
 const config: ForgeConfig = {
-  plugins: [
-    new FusesPlugin({
-      version: FuseVersion.V1,
-      [FuseV1Options.EnableEmbeddedAsarIntegrityValidation]: true,
-      [FuseV1Options.OnlyLoadAppFromAsar]: true,
-    }),
-  ],
   packagerConfig: {
-    name: "OpenAnime", // Display name
-    executableName: "openanime", // Executable name
+    name: "OpenAnime", 
+    executableName: "OpenAnime",
     asar: true,
-    icon: "assets/icon.ico",
-    osxSign: {},
+    icon: "assets/icon",
     extraResource: "unpacked",
     ignore,
   },
   hooks: {
+    postPackage: async (forgeConfig, packageResult) => {
+      if (process.platform === "darwin") {
+        const appPath = path.resolve(
+          packageResult.outputPaths[0],
+          "OpenAnime.app",
+        );
+        try {
+          execSync(`codesign --force --deep --sign - "${appPath}"`);
+        } catch (e) {
+          console.warn("Codesign warning:", e);
+        }
+      }
+    },
     postMake: async (forgeConfig, makeResults) => {
       // Find the Linux build results
       const linuxResult = makeResults.find(
@@ -54,7 +58,7 @@ const config: ForgeConfig = {
           appDir,
           outDir,
           appName: "OpenAnime",
-          executableName: "openanime",
+          executableName: "OpenAnime",
           iconPath,
           arch: "x86_64",
         });
@@ -78,9 +82,34 @@ const config: ForgeConfig = {
       // kaldırırsan amını yurdunu sikicem artık
     },
     {
-      name: "@electron-forge/maker-zip",
+      name: "@electron-forge/maker-dmg",
       platforms: ["darwin"],
-      config: {},
+      config: {
+        background: "./assets/dmg-background.png",
+        icon: "./assets/icon.icns",
+        iconSize: 96,
+        format: "UDZO",
+        window: {
+          size: {
+            width: 600,
+            height: 400,
+          },
+        },
+        contents: (opts: any) => [
+          {
+            x: 150,
+            y: 200,
+            type: "file",
+            path: opts.appPath,
+          },
+          {
+            x: 450,
+            y: 200,
+            type: "link",
+            path: "/Applications",
+          },
+        ],
+      },
     },
     {
       name: "@electron-forge/maker-deb",

@@ -22,11 +22,14 @@ export function createWindow() {
     width: 1000,
     height: 600,
     titleBarStyle: "hidden",
-    titleBarOverlay: {
-      color: "#00000000",
-      symbolColor: nativeTheme.shouldUseDarkColors ? "#fff" : "#000",
-      height: 20,
-    },
+    titleBarOverlay:
+      os.platform() === "darwin"
+        ? false
+        : {
+            color: "#00000000",
+            symbolColor: nativeTheme.shouldUseDarkColors ? "#fff" : "#000",
+            height: 20,
+          },
 
     trafficLightPosition: { x: 16, y: 16 },
     backgroundMaterial: "mica",
