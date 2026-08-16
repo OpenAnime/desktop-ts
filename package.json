@@ -39,7 +39,7 @@
     "name": "Kax675",
     "email": "hi@kax.one"
   },
-  "license": "MIT",
+  "license": "GPL-3.0-only",
   "dependencies": {
     "color": "^5.0.0",
     "electron-context-menu": "^4.1.0",
