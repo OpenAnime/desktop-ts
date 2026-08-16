@@ -20,6 +20,12 @@ jobs:
           - os: ubuntu-22.04
             platform: linux
             arch: x64
+          - os: windows-latest
+            platform: win32
+            arch: x64
+          - os: macos-latest
+            platform: darwin
+            arch: arm64
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
