@@ -17,6 +17,10 @@ contextBridge.exposeInMainWorld("NativeApp", {
   }),
 
   close: () => ipcRenderer.send("close"),
+  // RPC is disabled for now; keep these methods for renderer compatibility.
+  startRPC: () => {},
+  stopRPC: () => {},
+  updateRPC: () => {},
   setTheme: (theme) => ipcRenderer.send("theme.set", theme),
   clearKey: () => ipcRenderer.send("key.clear"),
   setKey: (value) => ipcRenderer.send("key.set", value),
