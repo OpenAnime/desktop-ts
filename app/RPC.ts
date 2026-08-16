@@ -1,3 +1,4 @@
+/*
 import * as DiscordRPC from "@xhayper/discord-rpc";
 import log from "electron-log";
 import config from "./config.js";
@@ -94,3 +95,4 @@ function retryLogin(): void {
     }
   }, 2000);
 }
+*/

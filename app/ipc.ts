@@ -2,7 +2,6 @@ import { app, ipcMain, nativeTheme } from "electron";
 import log from "electron-log";
 import os from "os";
 import { getColors } from "./colors.js";
-import { setActivity, startRPC, stopRPC } from "./RPC.js";
 import { Theme } from "./types.js";
 
 export function registerIpcHandlers() {
@@ -21,18 +20,6 @@ export function registerIpcHandlers() {
       },
       app: appObject,
     };
-  });
-
-  ipcMain.on("rpc.update", async (_event, activity) => {
-    setActivity(activity);
-  });
-
-  ipcMain.on("rpc.start", async () => {
-    startRPC();
-  });
-
-  ipcMain.on("rpc.stop", async () => {
-    stopRPC();
   });
 
   ipcMain.on("theme.set", async (_event, theme: Theme) => {

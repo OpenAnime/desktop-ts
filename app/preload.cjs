@@ -17,9 +17,6 @@ contextBridge.exposeInMainWorld("NativeApp", {
   }),
 
   close: () => ipcRenderer.send("close"),
-  startRPC: () => ipcRenderer.send("rpc.start"),
-  stopRPC: () => ipcRenderer.send("rpc.stop"),
-  updateRPC: (data) => ipcRenderer.send("rpc.update", data),
   setTheme: (theme) => ipcRenderer.send("theme.set", theme),
   clearKey: () => ipcRenderer.send("key.clear"),
   setKey: (value) => ipcRenderer.send("key.set", value),

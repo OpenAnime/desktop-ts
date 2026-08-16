@@ -1,3 +1,4 @@
+/*
 export interface RPC {
   state: string;
   details: string;
@@ -10,4 +11,5 @@ export interface RPC {
   partyMax: string;
   joinSecret: string;
 }
+*/
 export type Theme = "dark" | "light" | "system";
