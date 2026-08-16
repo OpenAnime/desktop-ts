@@ -21,7 +21,7 @@ const ignore = [
 
 const config: ForgeConfig = {
   packagerConfig: {
-    name: "OpenAnime", 
+    name: "OpenAnime",
     executableName: "OpenAnime",
     asar: true,
     icon: "assets/icon",
@@ -113,8 +113,14 @@ const config: ForgeConfig = {
     },
     {
       name: "@electron-forge/maker-deb",
-      platforms: ["linux"],
-      config: {},
+      config: {
+        options: {
+          bin: "openanime",
+          name: "openanime",
+          productName: "OpenAnime",
+          categories: ["AudioVideo", "Player"],
+        },
+      },
     },
   ],
   publishers: [

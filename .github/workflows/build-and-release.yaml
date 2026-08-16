@@ -26,10 +26,6 @@ jobs:
           - os: macos-latest
             platform: darwin
             arch: arm64
-          - os: macos-13
-            platform: darwin
-            arch: x64
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -73,6 +69,7 @@ jobs:
             out/make/**/*.exe
             out/make/**/*.nupkg
             out/make/**/*.dmg
+            out/make/**/RELEASES
             out/make/**/*.zip
           if-no-files-found: error
 
