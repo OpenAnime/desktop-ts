@@ -1,4 +1,4 @@
-import * as DiscordRPC from "discord-rpc";
+import * as DiscordRPC from "@xhayper/discord-rpc";
 import log from "electron-log";
 import config from "./config.js";
 
@@ -20,7 +20,7 @@ export async function startRPC(): Promise<void> {
   if (rpc) {
     log.info("RPC is already started. Ignoring startRPC call.");
   } else {
-    rpc = new DiscordRPC.Client({ transport: "ipc" });
+    rpc = new DiscordRPC.Client({ clientId: config.DiscordClientID });
 
     rpc.on("ready", () => {
       log.info("RPC is ready");
@@ -36,7 +36,7 @@ export async function startRPC(): Promise<void> {
       log.error("RPC encountered an error:", error);
     });
 
-    rpc.login({ clientId: config.DiscordClientID }).catch((error: Error) => {
+    rpc.login().catch((error: Error) => {
       log.error("Initial login failed:", error);
       errorCount++;
       if (errorCount < 5) {
@@ -68,12 +68,12 @@ export async function setActivity(data: ActivityData): Promise<void> {
   rpcUpdateTimeout = setTimeout(() => {
     activity = data;
     updateActivity();
-  }, 3000)
+  }, 3000);
 }
 
 function updateActivity(): void {
   if (rpc) {
-    rpc.setActivity(activity).catch((error: Error) => {
+    rpc.user?.setActivity(activity).catch((error: Error) => {
       log.error("Error setting activity:", error);
     });
   }
@@ -82,7 +82,7 @@ function updateActivity(): void {
 function retryLogin(): void {
   loginInterval = setInterval(() => {
     if (rpc) {
-      rpc.login({ clientId: config.DiscordClientID }).catch((error: Error) => {
+      rpc.login().catch((error: Error) => {
         errorCount++;
         log.error("Retry login failed:", error);
         if (errorCount >= 5 && loginInterval) {

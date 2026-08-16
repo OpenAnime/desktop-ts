@@ -15,7 +15,7 @@ const ignore = [
   "/.npmrc",
   "/.env",
   "/.env.example",
-  "/src",
+  "/scripts",
 ];
 
 const config: ForgeConfig = {
