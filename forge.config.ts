@@ -38,8 +38,10 @@ const config: ForgeConfig = {
       platforms: ["win32"],
       config: {
         authors: "Kax",
-        loadingGif: "./assets/loading.gif",
+        loadingGif: "./assets/cat.gif",
       },
+      // uras orospusu şu kediyi bir kez daha
+      // kaldırırsan amını yurdunu sikicem artık
     },
     {
       name: "@electron-forge/maker-zip",

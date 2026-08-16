@@ -6,6 +6,7 @@ import {
   nativeTheme,
   autoUpdater,
   dialog,
+  systemPreferences,
 } from "electron";
 import settings from "electron-settings";
 import log from "electron-log";
@@ -20,7 +21,6 @@ import started from "electron-squirrel-startup";
 import { Theme } from "./types.js";
 if (started) app.quit();
 import Color from "color";
-import windowsAccentColors from "windows-accent-colors";
 
 const updateURL = `${config.Servers.ReleaseServer}/update/${
   process.platform
@@ -33,7 +33,6 @@ const __dirname = dirname(__filename);
 log.initialize();
 log.info("App started");
 
-let colors: Record<string, number[]> | null;
 let yok: BrowserWindow | null;
 
 contextMenu({
@@ -60,11 +59,11 @@ contextMenu({
         });
 
         yok.loadFile(join(__dirname, "../assets/popup.html"));
-        yok.setIgnoreMouseEvents(true)
-        yok.setAlwaysOnTop(true, "screen-saver")
+        yok.setIgnoreMouseEvents(true);
+        yok.setAlwaysOnTop(true, "screen-saver");
         yok.on("close", (e) => {
-            e.preventDefault()
-        })
+          e.preventDefault();
+        });
       },
     },
   ],
@@ -74,29 +73,42 @@ let mainWindow: BrowserWindow | null;
 
 app.commandLine.appendSwitch("force_high_performance_gpu", "1");
 
+function generateWinUI3Palette(baseHex: string) {
+  const base = Color(baseHex);
+  const white = Color("#FFFFFF");
+  const black = Color("#000000");
+
+  return {
+    accentDark3: base.mix(black, 0.65).hsl().array(),
+    accentDark2: base.mix(black, 0.4).hsl().array(),
+    accentDark1: base.mix(black, 0.2).hsl().array(),
+    accentBase: base.hsl().array(),
+    accentLight1: base.mix(white, 0.25).hsl().array(),
+    accentLight2: base.mix(white, 0.5).hsl().array(),
+    accentLight3: base.mix(white, 0.75).hsl().array(),
+  };
+}
+
 async function getColors() {
-  if (os.platform() === "win32") {
-    const fetchedColors = windowsAccentColors.getAccentColors();
-    colors = {
-      accentDark1: Color(fetchedColors.accentDark1.hex).hsl().array(),
-      accentDark2: Color(fetchedColors.accentDark2.hex).hsl().array(),
-      accentDark3: Color(fetchedColors.accentDark3.hex).hsl().array(),
-      accentLight1: Color(fetchedColors.accentLight1.hex).hsl().array(),
-      accentLight2: Color(fetchedColors.accentLight2.hex).hsl().array(),
-      accentLight3: Color(fetchedColors.accentLight3.hex).hsl().array(),
-      accentBase: Color(fetchedColors.accent.hex).hsl().array(),
-    };
-  } else {
-    colors = null;
+  let baseHex = "#0078D4"; // Default Windows accent color
+  const platform = os.platform();
+
+  if (platform === "win32" || platform === "darwin") {
+    try {
+      const systemAccent = await systemPreferences.getAccentColor();
+      if (systemAccent) {
+        // systemPreferences returns 'RRGGBBAA' or 'RRGGBB'
+        baseHex = `#${systemAccent.slice(0, 6)}`;
+      }
+    } catch (e) {
+      console.warn("Failed to read system accent color:", e);
+    }
   }
+
+  return generateWinUI3Palette(baseHex);
 }
 
 const createWindow = async () => {
-  const appObject = {
-    version: app.getVersion(),
-  };
-  await getColors();
-
   mainWindow = new BrowserWindow({
     width: 1000,
     height: 600,
@@ -109,18 +121,11 @@ const createWindow = async () => {
 
     trafficLightPosition: { x: 16, y: 16 },
     backgroundMaterial: "mica",
+    backgroundColor: os.platform() === "linux" ? "#212121" : undefined,
+    vibrancy: "window",
     webPreferences: {
       preload: join(__dirname, "preload.cjs"),
       //contextIsolation: true,
-      additionalArguments: [
-        `--colors=${JSON.stringify(colors)}`,
-        `--os=${JSON.stringify({
-          platform: os.platform(),
-          release: os.release(),
-          type: os.type(),
-        })}`,
-        `--app-info=${JSON.stringify(appObject)}`,
-      ],
     },
   });
 
@@ -171,6 +176,23 @@ app.on("activate", () => {
   if (mainWindow === null) {
     createWindow();
   }
+});
+
+ipcMain.on("app.get-initial-info", async (event) => {
+  const colors = await getColors();
+  const appObject = {
+    version: app.getVersion(),
+  };
+
+  event.returnValue = {
+    colors,
+    os: {
+      platform: os.platform(),
+      release: os.release(),
+      type: os.type(),
+    },
+    app: appObject,
+  };
 });
 
 ipcMain.on("rpc.update", async (event, activity) => {
