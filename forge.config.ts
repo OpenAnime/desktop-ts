@@ -115,7 +115,7 @@ const config: ForgeConfig = {
       name: "@electron-forge/maker-deb",
       config: {
         options: {
-          bin: "openanime",
+          bin: "OpenAnime",
           name: "openanime",
           productName: "OpenAnime",
           categories: ["AudioVideo", "Player"],
