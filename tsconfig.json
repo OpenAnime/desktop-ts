@@ -9,6 +9,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "src",
+    "baseUrl": "app",
     "rootDir": "app",
     "types": ["node"],
     "paths": {
