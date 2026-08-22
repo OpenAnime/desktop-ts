@@ -8,11 +8,7 @@ import { registerIpcHandlers } from "./ipc.js";
 import { configureUpdater, registerUpdaterEvents } from "./updater.js";
 import { createWindow, hasMainWindow } from "./window.js";
 
-if (os.platform() === "linux") {
-  app.commandLine.appendSwitch("ozone-platform", "x11");
-  app.commandLine.appendSwitch("use-vulkan");
-  app.commandLine.appendSwitch("enable-features", "Vulkan");
-} else {
+if (os.platform() !== "linux") {
   app.commandLine.appendSwitch("force_high_performance_gpu", "1");
   app.commandLine.appendSwitch("enable-features", "Vulkan,D3D12,Metal,WebGPU");
   app.commandLine.appendSwitch("use-vulkan");
