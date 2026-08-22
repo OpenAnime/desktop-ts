@@ -9,9 +9,11 @@ import { configureUpdater, registerUpdaterEvents } from "./updater.js";
 import { createWindow, hasMainWindow } from "./window.js";
 
 if (os.platform() === "linux") {
-  app.commandLine.appendSwitch("ozone-platform", "x11");
-  app.commandLine.appendSwitch("use-vulkan");
-  app.commandLine.appendSwitch("enable-features", "Vulkan");
+  app.commandLine.appendSwitch("use-angle", "vulkan");
+  app.commandLine.appendSwitch("enable-features",
+    "Vulkan,VaapiVideoDecoder,VaapiVideoEncoder,CanvasOopRasterization," +
+    "UseMultiPlaneFormatForHardwareVideo,AcceleratedVideoDecodeLinuxGL," +
+    "VulkanFromANGLE,DefaultANGLEVulkan");
 } else {
   app.commandLine.appendSwitch("force_high_performance_gpu", "1");
   app.commandLine.appendSwitch("enable-features", "Vulkan,D3D12,Metal,WebGPU");
