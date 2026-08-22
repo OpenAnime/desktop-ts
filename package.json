@@ -1,7 +1,7 @@
 {
   "name": "openanime",
   "productName": "OpenAnime",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "type": "module",
   "description": "Desktop Application for OpenAnime",
   "main": "src/main.js",
@@ -27,7 +27,7 @@
     "@electron-forge/shared-types": "^7.8.1",
     "@electron/fuses": "^1.8.0",
     "@types/node": "^26.2.0",
-    "electron": "43.4.0",
+    "electron": "^43.4.1",
     "javascript-obfuscator": "^5.5.0",
     "prettier": "^3.6.2",
     "rapidenv": "^1.1.6",

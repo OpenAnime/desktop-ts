@@ -10,7 +10,6 @@
     "forceConsistentCasingInFileNames": true,
     "outDir": "src",
     "rootDir": "app",
-    "baseUrl": "app",
     "types": ["node"],
     "paths": {
       "*": ["node_modules/*"]
