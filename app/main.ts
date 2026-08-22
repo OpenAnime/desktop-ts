@@ -2,14 +2,17 @@ import { app } from "electron";
 import log from "electron-log";
 // @ts-expect-error -> In vite there are no types for the following line. Electron forge error
 import started from "electron-squirrel-startup";
+import os from "os";
 import { registerContextMenu } from "./context-menu.js";
 import { registerIpcHandlers } from "./ipc.js";
 import { configureUpdater, registerUpdaterEvents } from "./updater.js";
 import { createWindow, hasMainWindow } from "./window.js";
 
-app.commandLine.appendSwitch("force_high_performance_gpu", "1");
-app.commandLine.appendSwitch("enable-features", "Vulkan,D3D12,Metal,WebGPU");
-app.commandLine.appendSwitch("use-vulkan");
+if (os.platform() !== "linux") {
+  app.commandLine.appendSwitch("force_high_performance_gpu", "1");
+  app.commandLine.appendSwitch("enable-features", "Vulkan,D3D12,Metal,WebGPU");
+  app.commandLine.appendSwitch("use-vulkan");
+}
 app.commandLine.appendSwitch("enable-unsafe-webgpu", "1");
 if (started) app.quit();
 
