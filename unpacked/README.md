@@ -1,3 +1,1 @@
 burada olmaman gerekiyor...
-
-burdan exim iremin aminakoyim
